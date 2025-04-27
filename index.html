@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="30; url=./list.html" id="redirect-meta"> <!-- Fallback redirect after 30s -->
+    <title>正在跳转到最新报告...</title>
+    <script>
+        async function redirectToLatestReport() {
+            try {
+                const response = await fetch('reports.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const reports = await response.json();
+
+                if (reports && reports.length > 0) {
+                    // reports.json is sorted newest first by the generation script
+                    const latestReportFile = reports[0];
+                    const latestReportUrl = `./daily_html/${latestReportFile}`;
+                    
+                    // Perform JavaScript redirection immediately
+                    window.location.href = latestReportUrl;
+                    // No need to update meta tag here if JS redirect works
+                } else {
+                    // Handle case where reports.json is empty or not found
+                    const errorMsg = '错误：无法找到最新的报告文件。请确保 reports.json 文件存在且包含报告列表。';
+                    console.error(errorMsg);
+                    document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 将在30秒后跳转到 <a href="./list.html">报告列表</a>。</p>`;
+                }
+            } catch (error) {
+                console.error('Error fetching or processing reports.json:', error);
+                const errorMsg = `加载最新报告时出错: ${error.message}`;
+                document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 将在30秒后跳转到 <a href="./list.html">报告列表</a>。</p>`;
+            }
+        }
+
+        // Execute the redirection function when the page loads
+        window.onload = redirectToLatestReport;
+    </script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <p>正在加载最新报告，请稍候...</p>
+    <p>如果长时间未跳转，请检查浏览器控制台或 <a href="./list.html">返回报告列表</a>。</p>
+</body>
+</html>

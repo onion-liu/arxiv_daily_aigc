@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArXiv Daily AI Paper Digest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Add any custom styles here if needed */
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">每日 arXiv AI 论文摘要 (cs.CV - 图像/视频生成)</h1>
+        
+        <div id="report-list" class="space-y-4">
+            <p class="text-center text-gray-500">正在加载报告列表...</p>
+            <!-- Report links will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to fetch and display report links
+        async function loadReportLinks() {
+            const reportListDiv = document.getElementById('report-list');
+            reportListDiv.innerHTML = ''; // Clear loading message
+
+            try {
+                // In a real GitHub Pages setup, listing directory contents directly isn't possible.
+                // A common workaround is to have the GitHub Action generate a JSON file (e.g., reports.json)
+                // listing all the available HTML files in daily_html/.
+                // Then, fetch that JSON file here.
+
+                // For now, let's simulate with placeholder data or a simple message.
+                // We'll assume the GitHub Action will generate 'reports.json' in the root.
+                const response = await fetch('reports.json'); // Adjust path if needed
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const reports = await response.json();
+
+                if (reports && reports.length > 0) {
+                    // Sort reports, newest first (assuming YYYY_MM_DD.html format)
+                    reports.sort().reverse(); 
+
+                    reports.forEach(reportFile => {
+                        const reportName = reportFile.replace('.html', '').replace(/_/g, '-'); // Format date
+                        const link = document.createElement('a');
+                        link.href = `daily_html/${reportFile}`;
+                        link.textContent = `报告日期: ${reportName}`;
+                        link.className = 'block bg-white p-4 rounded shadow hover:bg-blue-50 transition duration-300';
+                        reportListDiv.appendChild(link);
+                    });
+                } else {
+                    reportListDiv.innerHTML = '<p class="text-center text-red-500">未能加载报告列表或列表为空。请确保 GitHub Action 已成功运行并生成了 reports.json。</p>';
+                }
+
+            } catch (error) {
+                console.error('Error loading report list:', error);
+                let errorMessage = '加载报告列表时遇到未知错误。请检查浏览器控制台获取详细信息。';
+                if (error instanceof SyntaxError) {
+                    // JSON 解析错误
+                    errorMessage = '<p class="text-center text-red-500">加载报告列表失败：reports.json 文件格式无效。请检查文件内容是否为合法的 JSON 数组。</p>';
+                } else if (error.message.startsWith('HTTP error!')) {
+                    // Fetch 网络错误 (e.g., 404 Not Found)
+                    errorMessage = `<p class="text-center text-red-500">加载报告列表失败：无法获取 reports.json 文件 (${error.message})。请确保文件存在于正确的位置且可访问。</p>`;
+                } else {
+                    // 其他类型的错误
+                     errorMessage = `<p class="text-center text-red-500">加载报告列表时出错：${error.message}。请检查浏览器控制台。</p>`;
+                }
+                reportListDiv.innerHTML = errorMessage;
+            }
+        }
+
+        // Load the links when the page loads
+        document.addEventListener('DOMContentLoaded', loadReportLinks);
+    </script>
+</body>
+</html>
