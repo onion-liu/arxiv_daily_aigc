@@ -10,7 +10,9 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Needed to commit changes back to the repo
+      contents: read      # Default content permission is read (needed for checkout)
+      pages: write        # Needed to deploy to GitHub Pages
+      id-token: write     # Needed for OpenID Connect authentication with GitHub Pages
 
     steps:
     - name: Checkout repository
@@ -31,18 +33,16 @@ jobs:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: python src/main.py
 
-    - name: Commit and push changes
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add daily_json/
-        git add daily_html/
-        # Optionally add index.html if it's modified by the script
-        # git add index.html
-        # Check if there are changes to commit
-        if ! git diff --staged --quiet; then
-          git commit -m "Automated daily arXiv report update"
-          git push
-        else
-          echo "No changes to commit."
-        fi
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        # Upload entire repository content, assuming index.html is in the root
+        # and links to files in daily_html/
+        path: '.'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
