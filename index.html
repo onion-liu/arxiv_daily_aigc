@@ -2,10 +2,50 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta refresh removed as content is loaded dynamically -->
     <title>最新 ArXiv AIGC 报告</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Use percentage height */
+            display: flex;
+            flex-direction: column;
+            font-family: sans-serif;
+        }
+        #content-wrapper {
+            flex: 1 1 auto; /* Grow, shrink, basis auto */
+            overflow: hidden; /* Contain the iframe */
+            position: relative; /* Needed for absolute positioning of iframe if required */
+        }
+        iframe {
+            border: none;
+            width: 100%;
+            height: 100%; /* Make iframe fill its container */
+            display: block; /* Ensure iframe is treated as a block element */
+        }
+        #footer {
+            flex-shrink: 0; /* Prevent footer from shrinking */
+            height: 40px; /* Give footer a fixed height */
+            line-height: 40px; /* Vertically center text in footer */
+            text-align: center;
+            padding: 0; /* Remove padding if using line-height for centering */
+            border-top: 1px solid #eee; /* Optional: add a separator */
+        }
+        #loading-message, #error-message {
+            padding: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #error-message p {
+             color: red;
+        }
+    </style>
     <script>
-        async function loadLatestReport() {
+        async function loadLatestReportIntoIframe() {
+            const iframe = document.getElementById('report-frame');
+            const loadingMessage = document.getElementById('loading-message');
+            const errorMessageDiv = document.getElementById('error-message');
+
             try {
                 const response = await fetch('reports.json');
                 if (!response.ok) {
@@ -14,45 +54,43 @@
                 const reports = await response.json();
 
                 if (reports && reports.length > 0) {
-                    // reports.json is sorted newest first by the generation script
-                    const latestReportFile = reports[0];
+                    // Assuming reports are sorted newest first or we take the first one
+                    const latestReportFile = reports[0]; 
                     const latestReportUrl = `./daily_html/${latestReportFile}`;
                     
-                    // Fetch the latest report content
-                    const reportResponse = await fetch(latestReportUrl);
-                    if (!reportResponse.ok) {
-                        throw new Error(`获取报告失败: ${reportResponse.status}`);
-                    }
-                    const reportHtml = await reportResponse.text();
+                    iframe.src = latestReportUrl;
+                    // Update the main page title based on the loaded report
+                    document.title = `ArXiv AIGC 报告 - ${latestReportFile.replace('.html', '').replace(/_/g, '-')}`;
+                    loadingMessage.style.display = 'none'; // Hide loading message
+                    iframe.style.display = 'block'; // Show iframe
 
-                    // Inject the report content into the body
-                    document.body.innerHTML = reportHtml;
-
-                    // Optionally, update the title with the report date
-                    const reportDate = latestReportFile.replace('.html', '').replace(/_/g, '-');
-                    document.title = `ArXiv AIGC 报告 - ${reportDate}`;
                 } else {
-                    // Handle case where reports.json is empty or not found
-                    const errorMsg = '错误：无法找到最新的报告文件。请确保 reports.json 文件存在且包含报告列表。';
-                    console.error(errorMsg);
-                    document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 请 <a href="./list.html">查看报告列表</a>。</p>`;
+                    throw new Error('无法找到最新的报告文件。请确保 reports.json 文件存在且包含报告列表。');
                 }
             } catch (error) {
-                console.error('Error fetching or processing reports.json:', error);
-                const errorMsg = `加载最新报告时出错: ${error.message}`;
-                document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 请 <a href="./list.html">查看报告列表</a>。</p>`;
+                console.error('Error loading report:', error);
+                loadingMessage.style.display = 'none'; // Hide loading message
+                errorMessageDiv.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">加载最新报告时出错: ${error.message} 请 <a href="./list.html">查看报告列表</a>。</p>`;
+                errorMessageDiv.style.display = 'block'; // Show error message
             }
         }
 
         // Execute the loading function when the page loads
-        window.onload = loadLatestReport;
+        window.onload = loadLatestReportIntoIframe;
     </script>
-    <style>
-        body { font-family: sans-serif; padding: 20px; text-align: center; }
-    </style>
 </head>
 <body>
-    <p>正在加载最新报告，请稍候...</p>
-    <!-- Content will be loaded here by JavaScript -->
+    <div id="content-wrapper">
+        <div id="loading-message">
+            <p>正在加载最新报告，请稍候...</p>
+        </div>
+        <div id="error-message" style="display: none;">
+            <!-- Error messages will be displayed here -->
+        </div>
+        <iframe id="report-frame" style="display: none;"></iframe>
+    </div>
+    <div id="footer">
+        <a href="./list.html" style="color: #0d9488;">Historical Report List</a>
+    </div>
 </body>
 </html>
