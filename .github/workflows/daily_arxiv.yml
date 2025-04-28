@@ -33,14 +33,27 @@ jobs:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: python src/main.py
 
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add daily_json/ daily_html/ index.html reports.json
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "No changes to commit."
+        else
+          git commit -m "Update daily arXiv papers $(date +'%Y-%m-%d')"
+          git push
+        fi
+
     - name: Setup Pages
       uses: actions/configure-pages@v5
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        # Upload entire repository content, assuming index.html is in the root
-        # and links to files in daily_html/
+        # Upload entire repository content, as index.html is at the root
+        # and daily_json/ and daily_html/ are needed.
         path: '.'
 
     - name: Deploy to GitHub Pages
