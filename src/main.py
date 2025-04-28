@@ -134,7 +134,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--date',
         type=str,
-        help='指定抓取的日期 (YYYY-MM-DD)。如果未指定，默认为 3 天前的 UTC 日期。'
+        help='指定抓取的日期 (YYYY-MM-DD)。如果未指定，当天的 UTC 日期。'
     )
 
     args = parser.parse_args()
@@ -148,12 +148,10 @@ if __name__ == '__main__':
             logging.error("日期格式无效，请使用 YYYY-MM-DD 格式。退出程序。")
             exit(1)
     else:
-        # 如果未指定日期，使用 scraper 中的默认逻辑（通常是几天前）
+        # 如果未指定日期，使用 scraper 中的默认逻辑（当天UTC时间）
         # 为了保持一致性，我们在这里计算默认日期，并传递给 main 函数
-        # 注意：这里计算的是本地时间的3天前，而 scraper 内部处理时会考虑 UTC
-        # 如果需要严格的 UTC 3天前，需要像 scraper 那样使用 timezone.utc
-        run_date = date.today() - timedelta(days=3)
-        logging.info(f"未指定日期，使用默认日期: {run_date.isoformat()} (本地时间的3天前)")
+        run_date = date.today()
+        logging.info(f"未指定日期，使用默认日期: {run_date.isoformat()}")
         # 或者，让 main 函数内部的 fetch_cv_papers 自行处理 None 值，以获取其默认 UTC 日期
         # run_date = None # 取消注释这行以使用 fetch_cv_papers 的默认日期逻辑
 
@@ -162,4 +160,7 @@ if __name__ == '__main__':
         logging.warning(f"模板目录 '{DEFAULT_TEMPLATE_DIR}' 或模板文件 '{DEFAULT_TEMPLATE_NAME}' 不存在。HTML 生成可能会失败。")
         # 可以考虑在这里创建默认模板或退出
 
+    # 检查过去两天的报告，避免遗漏，并生成当天的报告
+    main(target_date=run_date - timedelta(days=2))
+    main(target_date=run_date - timedelta(days=1))
     main(target_date=run_date)

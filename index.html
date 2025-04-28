@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="30; url=./list.html" id="redirect-meta"> <!-- Fallback redirect after 30s -->
-    <title>正在跳转到最新报告...</title>
+    <!-- Meta refresh removed as content is loaded dynamically -->
+    <title>最新 ArXiv AIGC 报告</title>
     <script>
-        async function redirectToLatestReport() {
+        async function loadLatestReport() {
             try {
                 const response = await fetch('reports.json');
                 if (!response.ok) {
@@ -18,24 +18,34 @@
                     const latestReportFile = reports[0];
                     const latestReportUrl = `./daily_html/${latestReportFile}`;
                     
-                    // Perform JavaScript redirection immediately
-                    window.location.href = latestReportUrl;
-                    // No need to update meta tag here if JS redirect works
+                    // Fetch the latest report content
+                    const reportResponse = await fetch(latestReportUrl);
+                    if (!reportResponse.ok) {
+                        throw new Error(`获取报告失败: ${reportResponse.status}`);
+                    }
+                    const reportHtml = await reportResponse.text();
+
+                    // Inject the report content into the body
+                    document.body.innerHTML = reportHtml;
+
+                    // Optionally, update the title with the report date
+                    const reportDate = latestReportFile.replace('.html', '').replace(/_/g, '-');
+                    document.title = `ArXiv AIGC 报告 - ${reportDate}`;
                 } else {
                     // Handle case where reports.json is empty or not found
                     const errorMsg = '错误：无法找到最新的报告文件。请确保 reports.json 文件存在且包含报告列表。';
                     console.error(errorMsg);
-                    document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 将在30秒后跳转到 <a href="./list.html">报告列表</a>。</p>`;
+                    document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 请 <a href="./list.html">查看报告列表</a>。</p>`;
                 }
             } catch (error) {
                 console.error('Error fetching or processing reports.json:', error);
                 const errorMsg = `加载最新报告时出错: ${error.message}`;
-                document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 将在30秒后跳转到 <a href="./list.html">报告列表</a>。</p>`;
+                document.body.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">${errorMsg} 请 <a href="./list.html">查看报告列表</a>。</p>`;
             }
         }
 
-        // Execute the redirection function when the page loads
-        window.onload = redirectToLatestReport;
+        // Execute the loading function when the page loads
+        window.onload = loadLatestReport;
     </script>
     <style>
         body { font-family: sans-serif; padding: 20px; text-align: center; }
@@ -43,6 +53,6 @@
 </head>
 <body>
     <p>正在加载最新报告，请稍候...</p>
-    <p>如果长时间未跳转，请检查浏览器控制台或 <a href="./list.html">返回报告列表</a>。</p>
+    <!-- Content will be loaded here by JavaScript -->
 </body>
 </html>

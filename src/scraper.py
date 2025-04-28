@@ -14,7 +14,7 @@ def fetch_cv_papers(category: str = 'cs.CV', max_results: int = 500, specified_d
         category (str): The arXiv category (e.g., 'cs.CV', 'cs.AI').
         max_results (int): The maximum number of results to retrieve.
         specified_date (Optional[date]): The specific date to fetch papers for (UTC).
-                                         Defaults to 3 days before the current UTC date.
+                                         Defaults to today UTC date.
 
     Returns:
         List[Dict[str, Any]]: A list of dictionaries, where each dictionary contains
@@ -23,16 +23,20 @@ def fetch_cv_papers(category: str = 'cs.CV', max_results: int = 500, specified_d
                               Returns an empty list if an error occurs or no papers are found.
     """
     if specified_date is None:
-        # Default to 3 days ago (UTC)
-        specified_date = datetime.now(timezone.utc).date() - timedelta(days=3)
+        # Default to today (UTC)
+        specified_date = datetime.now(timezone.utc).date()
         logging.info(f"No date specified, defaulting to {specified_date.strftime('%Y-%m-%d')} UTC.")
     else:
         logging.info(f"Fetching papers for specified date: {specified_date.strftime('%Y-%m-%d')} UTC.")
+    
+    # 将specified_date转为datetime
+    specified_date = datetime.combine(specified_date, datetime.min.time())
+    specified_date = specified_date - timedelta(hours=6) # 转换到arxiv时区
 
-    # Format for arXiv API: YYYYMMDDHHMM (GMT/UTC)
-    start_time_str = specified_date.strftime('%Y%m%d') + '0000'
-    next_day = specified_date + timedelta(days=1)
-    end_time_str = next_day.strftime('%Y%m%d') + '0000'
+    # Format for arXiv API: YYYYMMDDHHMM
+    start_time = specified_date - timedelta(days=1)
+    start_time_str = start_time.strftime('%Y%m%d%H%M')
+    end_time_str = specified_date.strftime('%Y%m%d%H%M')
 
     # Construct the search query
     query = f'cat:{category} AND submittedDate:[{start_time_str} TO {end_time_str}]'
@@ -80,7 +84,7 @@ if __name__ == '__main__':
     # Note: Using a future date like 2025 will likely return 0 results unless arXiv data exists for it.
     # Use a recent past date for better testing.
     # example_date = date.today() - timedelta(days=4) # Example: 4 days ago
-    example_date = date(2025, 4, 23) # Or a specific past date known to have papers
+    example_date = date(2025, 4, 26) # Or a specific past date known to have papers
 
     logging.info(f"Fetching papers for {example_date.strftime('%Y-%m-%d')}...")
     latest_papers = fetch_cv_papers(category='cs.CV', max_results=500, specified_date=example_date)
@@ -88,6 +92,6 @@ if __name__ == '__main__':
     if latest_papers:
         logging.info(f"--- Found {len(latest_papers)} Papers ---")
         for i, paper in enumerate(latest_papers):
-            print(f"{i+1}. {paper['title']}. authors: {paper['authors']}.")
+            print(f"{i+1}. {paper['title']}. published_date: {paper['published_date']}.")
     else:
-        print(f"No papers found for {date_example} or an error occurred.")
+        print(f"No papers found for {example_date} or an error occurred.")
