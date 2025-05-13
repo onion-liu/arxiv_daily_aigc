@@ -49,7 +49,7 @@ def call_openrouter_api(prompt: str, max_tokens: int = 5) -> str | None:
         response.raise_for_status()  # 如果请求失败 (状态码 >= 400)，则抛出 HTTPError
 
         result = response.json()
-        ai_response = result['choices'][0]['message']['content'].strip().lower()
+        ai_response = result['choices'][0]['message']['content'].strip()
         return ai_response
 
     except requests.exceptions.RequestException as e:
@@ -93,7 +93,7 @@ def filter_papers_by_topic(papers: list, topic: str = "image or video or multimo
 
         if ai_response is not None:
             logging.info(f"论文 {i+1}/{len(papers)}: '{title[:50]}...' - AI 回复: {ai_response}")
-            if 'yes' in ai_response:
+            if 'yes' in ai_response.lower():
                 filtered_papers.append(paper)
             # OpenRouter 对免费模型的速率有限制，可以考虑在 call_openrouter_api 内部或外部添加延时
             # time.sleep(1) # 暂停 1 秒
