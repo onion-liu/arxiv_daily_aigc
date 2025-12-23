@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArXiv CS.CV Papers (Image/Video Generation) - December 23, 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.4/framer-motion.dev.js"></script>
+    <!-- Example using Font Awesome (replace with your preferred icon library if needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            /* New Palette: Light, Clean, Futuristic with Teal/Aqua accents */
+            --bg-color: #f8fafc; /* Tailwind slate-50 (Very Light Gray) */
+            --card-bg-color: #ffffff; /* White */
+            --text-color: #1e293b; /* Tailwind slate-800 (Dark Gray-Blue) */
+            --text-muted-color: #64748b; /* Tailwind slate-500 (Medium Gray-Blue) */
+            --header-color: #0f172a; /* Tailwind slate-900 (Very Dark Blue) */
+            --highlight-primary: #14b8a6; /* Tailwind teal-500 */
+            --highlight-secondary: #67e8f9; /* Tailwind cyan-300 */
+            --border-color: #e2e8f0; /* Tailwind slate-200 (Light Gray) */
+            --shadow-color: rgba(15, 23, 42, 0.08); /* Subtle shadow based on slate-900 */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            line-height: 1.6;
+        }
+
+        .bento-grid {
+            display: grid;
+            gap: 1.5rem; /* Tailwind gap-6 */
+            grid-template-columns: 1fr; /* Force single column */
+            padding-bottom: 4rem; /* Add padding at the bottom */
+        }
+
+        .bento-item {
+            /* Apply semi-transparent white background and blur */
+            background-color: rgba(255, 255, 255, 0.7); /* White with 70% opacity */
+            backdrop-filter: blur(10px); /* Apply blur effect */
+            -webkit-backdrop-filter: blur(10px); /* Safari prefix */
+            border-radius: 1rem; /* Slightly larger radius */
+            padding: 1.75rem; /* Slightly more padding */
+            border: 1px solid rgba(226, 232, 240, 0.5); /* Lighter border with transparency */
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out;
+            overflow: hidden; /* Ensure content doesn't overflow */
+            position: relative; /* For potential pseudo-elements */
+        }
+
+        /* Removed ::before pseudo-element for a cleaner look */
+
+
+        .bento-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 20px var(--shadow-color), 0 4px 8px rgba(15, 23, 42, 0.06); /* Adjusted hover shadow */
+        }
+
+        .paper-title {
+            font-size: 1.125rem; /* Tailwind text-lg */
+            font-weight: 600; /* Tailwind font-semibold */
+            color: var(--highlight-primary); /* Use new primary highlight */
+            margin-bottom: 0.75rem; /* Tailwind mb-3 */
+            line-height: 1.4;
+        }
+
+        .paper-summary {
+            font-size: 0.875rem; /* Tailwind text-sm */
+            color: var(--text-muted-color);
+            margin-bottom: 1.25rem; /* Tailwind mb-5 */
+            line-height: 1.6;
+        }
+
+        .paper-link {
+            display: inline-flex; /* Use flex for icon alignment */
+            align-items: center;
+            font-size: 0.875rem; /* Tailwind text-sm */
+            font-weight: 600;
+            color: var(--highlight-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem; /* Add padding */
+            border-radius: 0.5rem; /* Slightly rounder */
+            background-color: rgba(20, 184, 166, 0.08); /* Subtle teal background */
+            border: 1px solid rgba(20, 184, 166, 0.2);
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .paper-link i {
+            margin-right: 0.5rem; /* Tailwind mr-2 */
+            transition: transform 0.3s ease;
+        }
+
+        .paper-link:hover {
+            background-color: rgba(20, 184, 166, 0.15);
+            color: #0d9488; /* Darker teal on hover */
+            transform: translateY(-1px);
+        }
+        .paper-link:hover i {
+             transform: translateX(2px);
+        }
+
+        .paper-authors {
+            font-size: 0.75rem; /* Tailwind text-xs */
+            color: var(--text-muted-color);
+            margin-top: 1rem; /* Tailwind mt-4 */
+            font-style: italic;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem; /* Tailwind mb-12 */
+            padding-top: 3rem; /* Tailwind pt-12 */
+        }
+
+        .header h1 {
+            font-size: 2.5rem; /* Tailwind text-4xl or 5xl */
+            font-weight: 700; /* Tailwind font-bold */
+            color: var(--header-color);
+            letter-spacing: -0.025em; /* Tailwind tracking-tight */
+            margin-bottom: 0.5rem;
+            /* Optional: Add a subtle text gradient */
+            /* background: linear-gradient(90deg, var(--highlight-primary), var(--highlight-secondary)); */
+            /* -webkit-background-clip: text; */
+            /* -webkit-text-fill-color: transparent; */
+        }
+
+        .header p {
+            font-size: 1.125rem; /* Tailwind text-lg */
+            color: var(--text-muted-color);
+            margin-top: 0.5rem; /* Tailwind mt-2 */
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--text-muted-color);
+            font-size: 0.875rem; /* Tailwind text-sm */
+            padding-top: 2rem;
+            padding-bottom: 2rem; /* Tailwind py-8 */
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        /* Simple line graphic element (optional) */
+        .line-graphic {
+            height: 1px; /* Thinner line */
+            background: linear-gradient(90deg, rgba(20, 184, 166, 0), var(--highlight-primary), rgba(20, 184, 166, 0));
+            opacity: 0.6;
+            margin: 1.5rem 0; /* Adjust margin */
+        }
+
+        /* Framer Motion requires the script, styles enhance appearance */
+        [data-motion-element] {
+             /* Base styles for elements animated by Framer Motion */
+        }
+
+        .paper-tldr {
+            font-size: 0.95rem; /* Slightly bigger than summary */
+            color: #475569; /* Changed to Tailwind slate-600 (slightly darker than summary) */
+            margin-top: 0.75rem; /* Tailwind mt-3 */
+            margin-bottom: 0.75rem; /* Tailwind mb-2 */
+            /* font-style: italic; */
+            font-weight: bold;
+        }
+
+        .paper-rating {
+            margin-top: 1rem; /* Tailwind mt-4 */
+            margin-bottom: 1rem; /* Tailwind mb-4 */
+            color: #f59e0b; /* Tailwind amber-500 */
+        }
+
+        .paper-rating i {
+            margin-right: 0.125rem; /* Tailwind mr-0.5 */
+        }
+
+        /* Apply consistent star color to sub-ratings */
+        .paper-sub-ratings .rating-item i {
+            color: #f59e0b; /* Match overall rating star color (amber-500) */
+            margin-right: 0.125rem; /* Consistent spacing */
+        }
+
+    </style>
+</head>
+<body class="container mx-auto px-4 antialiased">
+
+    <motion.div
+        initial="{ opacity: 0, y: -30 }"
+        animate="{ opacity: 1, y: 0 }"
+        transition="{ duration: 0.6, ease: 'easeOut' }"
+        class="header"
+        data-motion-element
+    >
+        <h1>AIGC Daily Papers</h1>
+        <p>Daily papers related to Image/Video/Multimodal Generation from cs.CV</p>
+        <p>December 23, 2025</p>
+        <div class="line-graphic mt-4 mb-8 mx-auto w-1/4"></div> <!-- Added line graphic -->
+    </motion.div>
+
+    <div class="bento-grid" id="paper-grid">
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.0, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">StoryMem: Multi-shot Long Video Storytelling with Memory</h2>
+            <p class="paper-summary">Visual storytelling requires generating multi-shot videos with cinematic quality and long-range consistency. Inspired by human memory, we propose StoryMem, a paradigm that reformulates long-form video storytelling as iterative shot synthesis conditioned on explicit visual memory, transforming pre-trained single-shot video diffusion models into multi-shot storytellers. This is achieved by a novel Memory-to-Video (M2V) design, which maintains a compact and dynamically updated memory bank of keyframes from historical generated shots. The stored memory is then injected into single-shot video diffusion models via latent concatenation and negative RoPE shifts with only LoRA fine-tuning. A semantic keyframe selection strategy, together with aesthetic preference filtering, further ensures informative and stable memory throughout generation. Moreover, the proposed framework naturally accommodates smooth shot transitions and customized story generation applications. To facilitate evaluation, we introduce ST-Bench, a diverse benchmark for multi-shot video storytelling. Extensive experiments demonstrate that StoryMem achieves superior cross-shot consistency over previous methods while preserving high aesthetic quality and prompt adherence, marking a significant step toward coherent minute-long video storytelling.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: StoryMem introduces a memory-augmented framework for generating long, multi-shot videos with improved consistency and aesthetic quality by iteratively refining shots based on a dynamically updated memory bank of keyframes.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: StoryMem 引入了一个记忆增强框架，通过基于关键帧的动态更新的记忆库迭代细化镜头，以生成具有改进的一致性和美观质量的长多镜头视频。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(10/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star-half-alt"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19539v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Kaiwen Zhang, Liming Jiang, Angtian Wang, Jacob Zhiyuan Fang, Tiancheng Zhi, Qing Yan, Hao Kang, Xin Lu, Xingang Pan</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.05, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">Real2Edit2Real: Generating Robotic Demonstrations via a 3D Control Interface</h2>
+            <p class="paper-summary">Recent progress in robot learning has been driven by large-scale datasets and powerful visuomotor policy architectures, yet policy robustness remains limited by the substantial cost of collecting diverse demonstrations, particularly for spatial generalization in manipulation tasks. To reduce repetitive data collection, we present Real2Edit2Real, a framework that generates new demonstrations by bridging 3D editability with 2D visual data through a 3D control interface. Our approach first reconstructs scene geometry from multi-view RGB observations with a metric-scale 3D reconstruction model. Based on the reconstructed geometry, we perform depth-reliable 3D editing on point clouds to generate new manipulation trajectories while geometrically correcting the robot poses to recover physically consistent depth, which serves as a reliable condition for synthesizing new demonstrations. Finally, we propose a multi-conditional video generation model guided by depth as the primary control signal, together with action, edge, and ray maps, to synthesize spatially augmented multi-view manipulation videos. Experiments on four real-world manipulation tasks demonstrate that policies trained on data generated from only 1-5 source demonstrations can match or outperform those trained on 50 real-world demonstrations, improving data efficiency by up to 10-50x. Moreover, experimental results on height and texture editing demonstrate the framework's flexibility and extensibility, indicating its potential to serve as a unified data generation framework.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces Real2Edit2Real, a framework generating robotic manipulation demonstrations by editing 3D scene geometry reconstructed from RGB observations, using depth-guided video generation to synthesize spatially augmented multi-view videos, achieving significant data efficiency improvements.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了Real2Edit2Real框架，通过编辑从RGB观测重建的3D场景几何体来生成机器人操作演示，并使用深度引导的视频生成来合成空间增强的多视角视频，从而显著提高数据效率。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star-half-alt"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19402v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Yujie Zhao, Hongwei Fan, Di Chen, Shengcong Chen, Liliang Chen, Xiaoqi Li, Guanghui Ren, Hao Dong</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.1, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">Emotion-Director: Bridging Affective Shortcut in Emotion-Oriented Image Generation</h2>
+            <p class="paper-summary">Image generation based on diffusion models has demonstrated impressive capability, motivating exploration into diverse and specialized applications. Owing to the importance of emotion in advertising, emotion-oriented image generation has attracted increasing attention. However, current emotion-oriented methods suffer from an affective shortcut, where emotions are approximated to semantics. As evidenced by two decades of research, emotion is not equivalent to semantics. To this end, we propose Emotion-Director, a cross-modal collaboration framework consisting of two modules. First, we propose a cross-Modal Collaborative diffusion model, abbreviated as MC-Diffusion. MC-Diffusion integrates visual prompts with textual prompts for guidance, enabling the generation of emotion-oriented images beyond semantics. Further, we improve the DPO optimization by a negative visual prompt, enhancing the model's sensitivity to different emotions under the same semantics. Second, we propose MC-Agent, a cross-Modal Collaborative Agent system that rewrites textual prompts to express the intended emotions. To avoid template-like rewrites, MC-Agent employs multi-agents to simulate human subjectivity toward emotions, and adopts a chain-of-concept workflow that improves the visual expressiveness of the rewritten prompts. Extensive qualitative and quantitative experiments demonstrate the superiority of Emotion-Director in emotion-oriented image generation.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces Emotion-Director, a cross-modal framework with two modules (MC-Diffusion and MC-Agent) to improve emotion-oriented image generation by addressing the affective shortcut where emotions are approximated to semantics.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了Emotion-Director，一个包含两个模块（MC-Diffusion和MC-Agent）的跨模态框架，旨在通过解决情感捷径问题（即将情感近似于语义）来改进情感导向的图像生成。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(7/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19479v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Guoli Jia, Junyao Hu, Xinwei Long, Kai Tian, Kaiyan Zhang, KaiKai Zhao, Ning Ding, Bowen Zhou</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.15000000000000002, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">dMLLM-TTS: Self-Verified and Efficient Test-Time Scaling for Diffusion Multi-Modal Large Language Models</h2>
+            <p class="paper-summary">Diffusion Multi-modal Large Language Models (dMLLMs) have recently emerged as a novel architecture unifying image generation and understanding. However, developing effective and efficient Test-Time Scaling (TTS) methods to unlock their full generative potential remains an underexplored challenge. To address this, we propose dMLLM-TTS, a novel framework operating on two complementary scaling axes: (1) trajectory exploration scaling to enhance the diversity of generated hypotheses, and (2) iterative refinement scaling for stable generation. Conventional TTS approaches typically perform linear search across these two dimensions, incurring substantial computational costs of O(NT) and requiring an external verifier for best-of-N selection. To overcome these limitations, we propose two innovations. First, we design an efficient hierarchical search algorithm with O(N+T) complexity that adaptively expands and prunes sampling trajectories. Second, we introduce a self-verified feedback mechanism that leverages the dMLLMs' intrinsic image understanding capabilities to assess text-image alignment, eliminating the need for external verifier. Extensive experiments on the GenEval benchmark across three representative dMLLMs (e.g., Lumina-DiMOO, MMaDA, Muddit) show that our framework substantially improves generation quality while achieving up to 6x greater efficiency than linear search. Project page: https://github.com/Alpha-VLLM/Lumina-DiMOO.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces dMLLM-TTS, a framework for efficient test-time scaling of diffusion multi-modal large language models, using hierarchical search and self-verification to improve generation quality and efficiency.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了dMLLM-TTS，一个用于扩散多模态大型语言模型高效测试时缩放的框架，它利用分层搜索和自我验证来提高生成质量和效率。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19433v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Yi Xin, Siqi Luo, Qi Qin, Haoxing Chen, Kaiwen Zhu, Zhiwei Zhang, Yangfan He, Rongchao Zhang, Jinbin Bai, Shuo Cao, Bin Fu, Junjun He, Yihao Liu, Yuewen Cao, Xiaohong Liu</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.2, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">MixFlow Training: Alleviating Exposure Bias with Slowed Interpolation Mixture</h2>
+            <p class="paper-summary">This paper studies the training-testing discrepancy (a.k.a. exposure bias) problem for improving the diffusion models. During training, the input of a prediction network at one training timestep is the corresponding ground-truth noisy data that is an interpolation of the noise and the data, and during testing, the input is the generated noisy data. We present a novel training approach, named MixFlow, for improving the performance. Our approach is motivated by the Slow Flow phenomenon: the ground-truth interpolation that is the nearest to the generated noisy data at a given sampling timestep is observed to correspond to a higher-noise timestep (termed slowed timestep), i.e., the corresponding ground-truth timestep is slower than the sampling timestep. MixFlow leverages the interpolations at the slowed timesteps, named slowed interpolation mixture, for post-training the prediction network for each training timestep. Experiments over class-conditional image generation (including SiT, REPA, and RAE) and text-to-image generation validate the effectiveness of our approach. Our approach MixFlow over the RAE models achieve strong generation results on ImageNet: 1.43 FID (without guidance) and 1.10 (with guidance) at 256 x 256, and 1.55 FID (without guidance) and 1.10 (with guidance) at 512 x 512.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces MixFlow, a post-training technique that leverages slowed interpolation mixtures to address the exposure bias problem in diffusion models, resulting in improved image generation performance, particularly on ImageNet using RAE models.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了一种名为MixFlow的后训练技术，该技术利用减速插值混合来解决扩散模型中的暴露偏差问题，从而提高图像生成性能，尤其是在使用RAE模型的ImageNet上。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19311v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Hui Li, Jiayue Lyu, Fu-Yun Wang, Kaihui Cheng, Siyu Zhu, Jingdong Wang</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.25, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">RMLer: Synthesizing Novel Objects across Diverse Categories via Reinforcement Mixing Learning</h2>
+            <p class="paper-summary">Novel object synthesis by integrating distinct textual concepts from diverse categories remains a significant challenge in Text-to-Image (T2I) generation. Existing methods often suffer from insufficient concept mixing, lack of rigorous evaluation, and suboptimal outputs-manifesting as conceptual imbalance, superficial combinations, or mere juxtapositions. To address these limitations, we propose Reinforcement Mixing Learning (RMLer), a framework that formulates cross-category concept fusion as a reinforcement learning problem: mixed features serve as states, mixing strategies as actions, and visual outcomes as rewards. Specifically, we design an MLP-policy network to predict dynamic coefficients for blending cross-category text embeddings. We further introduce visual rewards based on (1) semantic similarity and (2) compositional balance between the fused object and its constituent concepts, optimizing the policy via proximal policy optimization. At inference, a selection strategy leverages these rewards to curate the highest-quality fused objects. Extensive experiments demonstrate RMLer's superiority in synthesizing coherent, high-fidelity objects from diverse categories, outperforming existing methods. Our work provides a robust framework for generating novel visual concepts, with promising applications in film, gaming, and design.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces RMLer, a reinforcement learning framework for synthesizing novel objects by fusing concepts from diverse categories in text-to-image generation, addressing limitations in concept mixing and evaluation of existing methods.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 本文介绍了一种名为RMLer的强化学习框架，用于在文本到图像生成中通过融合来自不同类别的概念来合成新颖对象，解决了现有方法在概念混合和评估方面的局限性。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19300v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Jun Li, Zikun Chen, Haibo Chen, Shuo Chen, Jian Yang</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.30000000000000004, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">3SGen: Unified Subject, Style, and Structure-Driven Image Generation with Adaptive Task-specific Memory</h2>
+            <p class="paper-summary">Recent image generation approaches often address subject, style, and structure-driven conditioning in isolation, leading to feature entanglement and limited task transferability. In this paper, we introduce 3SGen, a task-aware unified framework that performs all three conditioning modes within a single model. 3SGen employs an MLLM equipped with learnable semantic queries to align text-image semantics, complemented by a VAE branch that preserves fine-grained visual details. At its core, an Adaptive Task-specific Memory (ATM) module dynamically disentangles, stores, and retrieves condition-specific priors, such as identity for subjects, textures for styles, and spatial layouts for structures, via a lightweight gating mechanism along with several scalable memory items. This design mitigates inter-task interference and naturally scales to compositional inputs. In addition, we propose 3SGen-Bench, a unified image-driven generation benchmark with standardized metrics for evaluating cross-task fidelity and controllability. Extensive experiments on our proposed 3SGen-Bench and other public benchmarks demonstrate our superior performance across diverse image-driven generation tasks.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces 3SGen, a unified image generation framework that handles subject, style, and structure control via an Adaptive Task-specific Memory module, achieving state-of-the-art performance on a new benchmark.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了3SGen，一个统一的图像生成框架，通过自适应任务特定记忆模块处理主题、风格和结构控制，并在一个新的基准测试中实现了最先进的性能。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19271v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Xinyang Song, Libin Wang, Weining Wang, Zhiwei Li, Jianxin Sun, Dandan Zheng, Jingdong Chen, Qi Li, Zhenan Sun</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.35000000000000003, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">VisionDirector: Vision-Language Guided Closed-Loop Refinement for Generative Image Synthesis</h2>
+            <p class="paper-summary">Generative models can now produce photorealistic imagery, yet they still struggle with the long, multi-goal prompts that professional designers issue. To expose this gap and better evaluate models' performance in real-world settings, we introduce Long Goal Bench (LGBench), a 2,000-task suite (1,000 T2I and 1,000 I2I) whose average instruction contains 18 to 22 tightly coupled goals spanning global layout, local object placement, typography, and logo fidelity. We find that even state-of-the-art models satisfy fewer than 72 percent of the goals and routinely miss localized edits, confirming the brittleness of current pipelines. To address this, we present VisionDirector, a training-free vision-language supervisor that (i) extracts structured goals from long instructions, (ii) dynamically decides between one-shot generation and staged edits, (iii) runs micro-grid sampling with semantic verification and rollback after every edit, and (iv) logs goal-level rewards. We further fine-tune the planner with Group Relative Policy Optimization, yielding shorter edit trajectories (3.1 versus 4.2 steps) and stronger alignment. VisionDirector achieves new state of the art on GenEval (plus 7 percent overall) and ImgEdit (plus 0.07 absolute) while producing consistent qualitative improvements on typography, multi-object scenes, and pose editing.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces LGBench, a benchmark for evaluating generative models with long, multi-goal prompts, and VisionDirector, a training-free vision-language supervisor that refines image synthesis through structured goal extraction and staged edits, achieving state-of-the-art results.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了LGBench，一个用于评估生成模型在长多目标提示下性能的基准，以及VisionDirector，一个无需训练的视觉-语言监督器，通过结构化目标提取和分阶段编辑来改进图像合成，从而达到最先进的结果。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19243v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Meng Chu, Senqiao Yang, Haoxuan Che, Suiyun Zhang, Xichen Zhang, Shaozuo Yu, Haokun Gui, Zhefan Rao, Dandan Tu, Rui Liu, Jiaya Jia</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.4, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">CETCAM: Camera-Controllable Video Generation via Consistent and Extensible Tokenization</h2>
+            <p class="paper-summary">Achieving precise camera control in video generation remains challenging, as existing methods often rely on camera pose annotations that are difficult to scale to large and dynamic datasets and are frequently inconsistent with depth estimation, leading to train-test discrepancies. We introduce CETCAM, a camera-controllable video generation framework that eliminates the need for camera annotations through a consistent and extensible tokenization scheme. CETCAM leverages recent advances in geometry foundation models, such as VGGT, to estimate depth and camera parameters and converts them into unified, geometry-aware tokens. These tokens are seamlessly integrated into a pretrained video diffusion backbone via lightweight context blocks. Trained in two progressive stages, CETCAM first learns robust camera controllability from diverse raw video data and then refines fine-grained visual quality using curated high-fidelity datasets. Extensive experiments across multiple benchmarks demonstrate state-of-the-art geometric consistency, temporal stability, and visual realism. Moreover, CETCAM exhibits strong adaptability to additional control modalities, including inpainting and layout control, highlighting its flexibility beyond camera control. The project page is available at https://sjtuytc.github.io/CETCam_project_page.github.io/.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: CETCAM introduces a novel camera-controllable video generation framework that uses geometry-aware tokens derived from depth and camera parameter estimation, eliminating the need for camera annotations and demonstrating state-of-the-art performance.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: CETCAM 提出了一种新的相机可控视频生成框架，该框架使用从深度和相机参数估计中导出的几何感知 tokens，无需相机注释，并展示了最先进的性能。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.19020v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Zelin Zhao, Xinyu Gong, Bangya Liu, Ziyang Song, Jun Zhang, Suhui Wu, Yongxin Chen, Hao Zhang</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.45, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">DVI: Disentangling Semantic and Visual Identity for Training-Free Personalized Generation</h2>
+            <p class="paper-summary">Recent tuning-free identity customization methods achieve high facial fidelity but often overlook visual context, such as lighting, skin texture, and environmental tone. This limitation leads to ``Semantic-Visual Dissonance,'' where accurate facial geometry clashes with the input's unique atmosphere, causing an unnatural ``sticker-like'' effect. We propose **DVI (Disentangled Visual-Identity)**, a zero-shot framework that orthogonally disentangles identity into fine-grained semantic and coarse-grained visual streams. Unlike methods relying solely on semantic vectors, DVI exploits the inherent statistical properties of the VAE latent space, utilizing mean and variance as lightweight descriptors for global visual atmosphere. We introduce a **Parameter-Free Feature Modulation** mechanism that adaptively modulates semantic embeddings with these visual statistics, effectively injecting the reference's ``visual soul'' without training. Furthermore, a **Dynamic Temporal Granularity Scheduler** aligns with the diffusion process, prioritizing visual atmosphere in early denoising stages while refining semantic details later. Extensive experiments demonstrate that DVI significantly enhances visual consistency and atmospheric fidelity without parameter fine-tuning, maintaining robust identity preservation and outperforming state-of-the-art methods in IBench evaluations.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces DVI, a training-free framework for personalized image generation that disentangles identity into semantic and visual streams to improve visual consistency and atmospheric fidelity, addressing the 'sticker-like' effect in existing methods.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了一种名为DVI的免训练个性化图像生成框架，它将身份解耦为语义和视觉流，以提高视觉一致性和氛围逼真度，解决了现有方法中存在的“贴纸效应”。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.18964v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Guandong Li, Yijun Ding</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.5, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">LouvreSAE: Sparse Autoencoders for Interpretable and Controllable Style Transfer</h2>
+            <p class="paper-summary">Artistic style transfer in generative models remains a significant challenge, as existing methods often introduce style only via model fine-tuning, additional adapters, or prompt engineering, all of which can be computationally expensive and may still entangle style with subject matter. In this paper, we introduce a training- and inference-light, interpretable method for representing and transferring artistic style. Our approach leverages an art-specific Sparse Autoencoder (SAE) on top of latent embeddings of generative image models. Trained on artistic data, our SAE learns an emergent, largely disentangled set of stylistic and compositional concepts, corresponding to style-related elements pertaining brushwork, texture, and color palette, as well as semantic and structural concepts. We call it LouvreSAE and use it to construct style profiles: compact, decomposable steering vectors that enable style transfer without any model updates or optimization. Unlike prior concept-based style transfer methods, our method requires no fine-tuning, no LoRA training, and no additional inference passes, enabling direct steering of artistic styles from only a few reference images. We validate our method on ArtBench10, achieving or surpassing existing methods on style evaluations (VGG Style Loss and CLIP Score Style) while being 1.7-20x faster and, critically, interpretable.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: The paper introduces LouvreSAE, a computationally efficient and interpretable method for artistic style transfer using sparse autoencoders on latent embeddings, enabling style control without model fine-tuning or optimization.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文介绍了LouvreSAE，一种计算高效且可解释的艺术风格迁移方法，它使用稀疏自动编码器对潜在嵌入进行处理，从而无需模型微调或优化即可实现风格控制。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    <span class="text-xs text-gray-500 ml-1">(9/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.18930v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Raina Panda, Daniel Fein, Arpita Singhal, Mark Fiore, Maneesh Agrawala, Matyas Bohacek</p>
+            
+        </motion.div>
+        
+        <motion.div
+            initial="{ opacity: 0, y: 50, scale: 0.9 }"
+            whileInView="{ opacity: 1, y: 0, scale: 1 }"
+            viewport="{ once: true, amount: 0.2 }" /* Trigger when 20% is visible */
+            transition="{ duration: 0.5, delay: 0.55, ease: 'easeOut' }"  
+            class="bento-item"
+            data-motion-element
+        >
+            <h2 class="paper-title">Symmetrization of 3D Generative Models</h2>
+            <p class="paper-summary">We propose a novel data-centric approach to promote symmetry in 3D generative models by modifying the training data rather than the model architecture. Our method begins with an analysis of reflectional symmetry in both real-world 3D shapes and samples generated by state-of-the-art models. We hypothesize that training a generative model exclusively on half-objects, obtained by reflecting one half of the shapes along the x=0 plane, enables the model to learn a rich distribution of partial geometries which, when reflected during generation, yield complete shapes that are both visually plausible and geometrically symmetric. To test this, we construct a new dataset of half-objects from three ShapeNet classes (Airplane, Car, and Chair) and train two generative models. Experiments demonstrate that the generated shapes are symmetrical and consistent, compared with the generated objects from the original model and the original dataset objects.</p>
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: This paper proposes a data-centric approach to improve symmetry in 3D generative models by training on half-objects and reflecting them during generation, resulting in more symmetrical outputs.</p>
+            
+            
+            <p class="paper-tldr"><strong>TLDR</strong>: 该论文提出了一种数据中心方法，通过在半对象上训练3D生成模型并在生成过程中反射它们，从而提高对称性，最终生成更对称的输出。</p>
+            
+
+            
+            
+            <div class="paper-sub-ratings" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; font-size: 0.8em;">
+                
+                <div class="rating-item">
+                    <span class="rating-label">Relevance:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(3/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Novelty:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(7/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Clarity:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(8/10)</span>
+                </div>
+                
+                
+                <div class="rating-item">
+                    <span class="rating-label">Potential Impact:</span>
+                    
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                    <span class="text-xs text-gray-500 ml-1">(6/10)</span>
+                </div>
+                
+            </div>
+            
+            
+
+            
+            <div class="paper-rating">
+                <span class="rating-label" style="color: #000; font-weight: bold;">Overall:</span>
+                
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star"></i>
+                    
+                
+                    
+                        <i class="fas fa-star-half-alt"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                    
+                        <i class="far fa-star"></i>
+                    
+                
+                <span class="text-xs text-gray-500 ml-1">(5/10)</span>
+            </div>
+            
+
+            <a href="http://arxiv.org/abs/2512.18953v1" target="_blank" class="paper-link">
+                <i class="fas fa-file-pdf mr-1"></i> Read Paper (PDF)
+            </a>
+            
+            <p class="paper-authors">Authors: Nicolas Caytuiro, Ivan Sipiran</p>
+            
+        </motion.div>
+        
+    </div>
+
+    <footer class="footer">
+        Generated on 2025-12-23 04:43:53 UTC. Powered by <a href="https://github.com/onion-liu" target="_blank">onion-liu</a>.
+    </footer>
+
+</body>
+</html>
