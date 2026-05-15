@@ -42,7 +42,10 @@ def fetch_cv_papers(category: str = 'cs.CV', max_results: int = 500, specified_d
     query = f'cat:{category} AND submittedDate:[{start_time_str} TO {end_time_str}]'
     logging.info(f"Using arXiv query: {query}")
 
-    client = arxiv.Client()
+    client = arxiv.Client(
+        delay_seconds=5,     # 将默认的 3 秒增加到 5 秒或更高
+        num_retries=5        # 增加重试次数
+    )
     search = arxiv.Search(
         query=query,
         max_results=max_results,
@@ -67,10 +70,10 @@ def fetch_cv_papers(category: str = 'cs.CV', max_results: int = 500, specified_d
             count += 1
         logging.info(f"Successfully fetched {count} papers submitted on {specified_date.strftime('%Y-%m-%d')} from {category}.")
 
-    except arxiv.arxiv.UnexpectedEmptyPageError as e:
+    except arxiv.UnexpectedEmptyPageError as e:
         logging.warning(f"arXiv query returned an empty page (potentially no results for the date/query): {e}")
         # This might not be a critical error, could just mean no papers found
-    except arxiv.arxiv.HTTPError as e:
+    except arxiv.HTTPError as e:
         logging.error(f"HTTP error during arXiv search: {e}")
     except Exception as e:
         logging.error(f"An unexpected error occurred during arXiv search: {e}", exc_info=True)

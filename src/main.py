@@ -3,6 +3,7 @@ import json
 import logging
 import argparse
 from datetime import date, datetime, timedelta
+import time
 
 # 确保 src 目录在 Python 路径中，以便导入其他模块
 # 这通常在运行脚本时自动处理，或者可以通过设置 PYTHONPATH
@@ -161,6 +162,8 @@ if __name__ == '__main__':
         # 可以考虑在这里创建默认模板或退出
 
     # 检查过去两天的报告，避免遗漏，并生成当天的报告
-    main(target_date=run_date - timedelta(days=2))
-    main(target_date=run_date - timedelta(days=1))
-    main(target_date=run_date)
+    for days_ago in [2, 1, 0]:
+        main(target_date=run_date - timedelta(days=days_ago))
+        if days_ago > 0:
+            logging.info("等待 60 秒后处理下一个日期，以避免触发 ArXiv 频率限制...")
+            time.sleep(60) # 在 GitHub Actions 环境中建议设置较长的间隔
