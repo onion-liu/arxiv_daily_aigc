@@ -24,6 +24,11 @@ DEFAULT_HTML_DIR = os.path.join(PROJECT_ROOT, 'daily_html')
 DEFAULT_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'templates')
 DEFAULT_TEMPLATE_NAME = 'paper_template.html' # 确保此模板存在
 
+def check_json(json_filepath):
+    with open(json_filepath, 'r') as f:
+        data = json.load(f)
+    return len(data) > 0
+
 def main(target_date: date):
     """主执行流程：抓取、过滤、保存、生成HTML。"""
     logging.info(f"开始处理日期: {target_date.isoformat()}")
@@ -34,7 +39,7 @@ def main(target_date: date):
     logging.info(f"目标 JSON 文件路径: {json_filepath}")
 
     # --- 检查 JSON 文件是否存在 ---
-    if os.path.exists(json_filepath):
+    if os.path.exists(json_filepath) and check_json(json_filepath):
         logging.info(f"找到已存在的 JSON 文件: {json_filepath}。跳过抓取和过滤步骤。")
         # 不需要加载数据，generate_html_from_json 会直接读取文件
     else:
