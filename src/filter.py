@@ -15,7 +15,8 @@ OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 # 可以选择一个合适的模型，例如免费或低成本的模型进行分类任务
 # 查阅 OpenRouter 文档获取可用模型列表: https://openrouter.ai/docs#models
 # 例如使用 'mistralai/mistral-7b-instruct:free'
-MODEL_NAME = "google/gemini-2.0-flash-001"
+# MODEL_NAME = "google/gemini-2.0-flash-001"
+MODEL_NAME = "google/gemini-3.1-flash-lite"
 
 def call_openrouter_api(prompt: str, max_tokens: int = 5) -> str | None:
     """调用 OpenRouter API 并返回模型的响应。
