@@ -6,17 +6,22 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch: # Allows manual triggering
 
+concurrency:
+  group: daily-arxiv-main
+  cancel-in-progress: false
+
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write     # Needed to push changes back to the repository
-      pages: write        # Needed to deploy to GitHub Pages
-      id-token: write     # Needed for OpenID Connect authentication with GitHub Pages
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -35,27 +40,14 @@ jobs:
 
     - name: Commit and push changes
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
         git add daily_json/ daily_html/ index.html reports.json
         # Check if there are changes to commit
         if git diff --staged --quiet; then
           echo "No changes to commit."
         else
           git commit -m "Update daily arXiv papers $(date +'%Y-%m-%d')"
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main
         fi
-
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
-
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        # Upload entire repository content, as index.html is at the root
-        # and daily_json/ and daily_html/ are needed.
-        path: '.'
-
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
