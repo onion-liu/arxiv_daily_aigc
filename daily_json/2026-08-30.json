@@ -1,0 +1,368 @@
+[
+    {
+        "title": "GenFirst: Generation Before Reconstruction for Stable End-to-End Latent Generative Modeling",
+        "summary": "Latent generative models typically follow a two-stage pipeline, training a variational autoencoder for reconstruction and then a generative model on the frozen latent space. Since reconstruction-optimized latents are not necessarily generation-friendly, jointly training both models is an appealing alternative. However, direct end-to-end training remains challenging, as it is prone to latent collapse and faces a generation-reconstruction conflict. We revisit this problem by analyzing how different objectives shape the latent space and identify two key insights. First, the entropy term in the Kullback-Leibler divergence objective is essential for preventing collapse: reconstruction and prior fitting tend to shrink the posterior, while entropy preserves non-degenerate latent uncertainty. Second, reconstruction and generation exhibit asymmetric learning dynamics: reconstruction is fast and strongly supervised, whereas generation is slower and harder to optimize. Based on these insights, we achieve the first direct end-to-end training without latent collapse and propose GenFirst, a simple generation-before-reconstruction strategy. The generative objective first shapes the latent space under weak reconstruction pressure, after which reconstruction is progressively strengthened to recover visual details. We validate GenFirst with continuous autoregressive priors with exact likelihoods and SiT priors with implicit likelihoods. With our end-to-end objective and GenFirst, SiT achieves a gFID of 0.97 with CFG and 1.45 without CFG on ImageNet-256, while MMDiT reaches a GenEval score of 0.90 on text-to-image generation. Beyond image generation, we extend the framework to shared visual latents for generation and representation learning, and to continuous unified text-image generation. These results demonstrate the generality of stable end-to-end latent learning across generative priors and modalities.",
+        "url": "http://arxiv.org/abs/2608.29335v1",
+        "published_date": "2026-08-29T15:39:14+00:00",
+        "updated_date": "2026-08-29T15:39:14+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Guangting Zheng",
+            "Yiyuan Zhang",
+            "Tao Yang",
+            "Yunpeng Chen",
+            "Rui Zhu",
+            "Jiajun Deng",
+            "Yanyong Zhang"
+        ],
+        "tldr": "GenFirst introduces an end-to-end latent generative modeling framework that addresses the generation-reconstruction conflict by prioritizing the generative objective before progressively strengthening reconstruction, effectively preventing latent collapse.",
+        "tldr_zh": "GenFirst 提出了一种端到端的潜在生成模型框架，通过在增强重建细节之前优先优化生成目标，解决了生成与重建之间的冲突，从而有效避免了潜在空间坍塌。",
+        "relevance_score": 10,
+        "novelty_claim_score": 9,
+        "clarity_score": 9,
+        "potential_impact_score": 9,
+        "overall_priority_score": 9
+    },
+    {
+        "title": "Test-Time Scaling for Video Diffusion Models via Diagnosis-Guided Candidate Recycling",
+        "summary": "Recent video diffusion models have achieved remarkable generation quality, but high-fidelity results still largely depend on closed-source systems or costly large-scale infrastructure. Test-time scaling (TTS) offers a training-free way to improve lightweight generators by spending additional inference compute, yet existing methods mostly remain within a noise-search paradigm: they sample, select, or perturb denoising trajectories and discard low-scoring candidates after expensive generation. This generate-and-discard process wastes not only computation but also the partial motion, layout, or appearance structure already encoded in recoverable samples. We present \\textbf{GEARS} (\\textbf{G}uided \\textbf{E}diting for \\textbf{A}daptive \\textbf{R}ecycling \\textbf{S}earch), a training-free framework that introduces {diagnosis-guided candidate recycling} into video TTS by turning such candidates into editable priors through a generation-evaluation-editing loop. GEARS consists of two collaborative components. The \\textbf{Stage-Aware Scheduler} determines what to repair, when to repair it, and which candidates should be preserved, recycled, or discarded. The \\textbf{Candidate Recycler} diagnoses recoverable failures from keyframes and multi-dimensional reward feedback, derives candidate-specific repair prompts, and repairs the corresponding candidates through manifold-aware latent SDEdit. The repaired candidates are recycled into the search pool, creating refinement paths beyond standard noise perturbation while preserving useful structure. Under matched NFE budgets, GEARS consistently outperforms existing video TTS methods on VBench, bringing a 1.3B model to a total score comparable to a 14B counterpart, and ablations verify the necessity of adaptive scheduling, diagnosis-conditioned editing, and manifold-aware re-denoising. Code is available on GitHub.",
+        "url": "http://arxiv.org/abs/2608.29322v1",
+        "published_date": "2026-08-29T15:08:31+00:00",
+        "updated_date": "2026-08-29T15:08:31+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Hangzhou He",
+            "Lunhao Duan",
+            "Shanshan Zhao",
+            "Kaiwen Li",
+            "Qing-Guo Chen",
+            "Weihua Luo",
+            "Yanye Lu"
+        ],
+        "tldr": "GEARS is a training-free video diffusion framework that replaces wasteful generate-and-discard strategies with a diagnosis-guided recycling loop, significantly improving lightweight model performance through adaptive repair.",
+        "tldr_zh": "GEARS 是一种无需训练的视频扩散模型推理优化框架，通过诊断引导的循环生成机制，将原本会被丢弃的次优结果转化为可修复的先验，从而显著提升轻量级模型的生成质量。",
+        "relevance_score": 10,
+        "novelty_claim_score": 9,
+        "clarity_score": 9,
+        "potential_impact_score": 9,
+        "overall_priority_score": 9
+    },
+    {
+        "title": "Elastic Token Compression for Pixel-Space Diffusion Transformers",
+        "summary": "Natural images concentrate their detail in a small fraction of the frame, yet diffusion models spend a full token on every patch, in every layer and at every timestep. The waste is largest in pixel-space models, with no autoencoder to absorb low-level redundancy first. Probing a pretrained pixel text-to-image transformer, we find its middle-block tokens redundant wherever the image is flat. The redundancy occupies connected, content-shaped regions, and exploiting it requires tokens with the same geometry. Cutting a Hilbert ordering of the patches provides them. Consecutive positions are always image neighbours, so any contiguous run is a connected region whose size and shape follow the content, and grouping in two dimensions becomes a cut in one. Existing reductions each lose part of this. Similarity merging scatters its groups, latent bottlenecks discard position, and skipping deletes what it should summarize. We cut where the model's features change most and pool each run into one region token. Our Region Token Interface (\\method{}) adapts a diffusion model to these tokens, with the region count drawn at random during fine-tuning so one checkpoint serves every budget. \\method{} leads prior reduction methods at matched budgets, matches dense quality at $2.0\\times$ the speed, and stays close at $2.6\\times$. The code and models are open-sourced at https://eduardzamfir.github.io/rti",
+        "url": "http://arxiv.org/abs/2608.29281v1",
+        "published_date": "2026-08-29T14:06:27+00:00",
+        "updated_date": "2026-08-29T14:06:27+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Eduard Zamfir",
+            "Christian Reisswig",
+            "Zongwei Wu",
+            "Yongqin Xian",
+            "Radu Timofte"
+        ],
+        "tldr": "The paper introduces a Region Token Interface (RTI) for pixel-space diffusion transformers, which improves computational efficiency by dynamically compressing redundant spatial tokens using a Hilbert-curve-based pooling strategy.",
+        "tldr_zh": "该论文提出了一种用于像素空间扩散 Transformer 的区域令牌接口（RTI），通过基于希尔伯特曲线的池化策略动态压缩冗余的空间令牌，从而显著提升了计算效率。",
+        "relevance_score": 9,
+        "novelty_claim_score": 8,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 9
+    },
+    {
+        "title": "RAGDiffusion++: From Macro-Retrieval to Micro-Fidelity Alignment for Garment Generation",
+        "summary": "Standard clothing asset generation---restoring forward-facing flat-lay garment images from diverse real-world contexts---holds immense commercial value yet demands both macroscopic topological accuracy and microscopic physical fidelity. Although our previous work RAGDiffusion effectively eradicated large-scale structural hallucinations via retrieval-augmented macro-constraints, achieving industrial-grade micro-texture realism remains an unsolved bottleneck. We formally identify this limitation as High-Frequency Trajectory Collapse: supervised fine-tuning (SFT) converges to the conditional mean of the training distribution, which is dominated by smooth, low-frequency textures, causing high-frequency patterns (e.g., fabric weaves, intricate logos) to become nearly un-sampleable. Naively applying Reinforcement Learning (RL) post-training further triggers Artifact Hacking, where models exploit semantic biases in generic reward models by generating deceptive checkerboard noise. Our key insight is that RL can fundamentally reshape the sampling distribution of flow models---elevating the probability of high-fidelity trajectories under accurate reward guidance---while adversarial regularization prevents exploitation of reward blind spots. Realizing this principle requires three prerequisites: (i)inherent capacity, established through a 27,725-pair high-complexity garment dataset (STGarment-Plus) and a Dual-Image-Stream FLUX architecture upgrade; (ii)perceptive reward, provided by a novel attribute-aware reward model (Garment-RM) trained on 500K images via fine-grained contrastive learning, achieving 84.67% human preference accuracy; and (iii)hacking prevention, enforced by our Adversarial-Regularized GRPO (AR-GRPO) strategy that integrates a dynamic discriminator into the RL sampling trajectory to penalize artifacts while enriching authentic high-frequency details.",
+        "url": "http://arxiv.org/abs/2608.29280v1",
+        "published_date": "2026-08-29T14:06:09+00:00",
+        "updated_date": "2026-08-29T14:06:09+00:00",
+        "categories": [
+            "cs.CV",
+            "cs.AI"
+        ],
+        "authors": [
+            "Yuhan Li",
+            "Xianfeng Tan",
+            "Fangao Zeng",
+            "Wenxiang Shang",
+            "Pipei Huang",
+            "Hao Zhou",
+            "Zhiyu Jin",
+            "Wenjun Zhang",
+            "Bingbing Ni"
+        ],
+        "tldr": "RAGDiffusion++ improves high-frequency texture fidelity in garment generation by addressing 'High-Frequency Trajectory Collapse' through a dual-stream architecture, an attribute-aware reward model, and an Adversarial-Regularized GRPO (AR-GRPO) strategy.",
+        "tldr_zh": "RAGDiffusion++ 通过双流架构、属性感知奖励模型以及对抗正则化强化学习（AR-GRPO）策略，解决了服装生成中高频纹理细节丢失的问题，提升了图像的微观保真度。",
+        "relevance_score": 9,
+        "novelty_claim_score": 8,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 9
+    },
+    {
+        "title": "Training-Free Hidden-State Refinement for Flow-Matching Image Generators",
+        "summary": "We aim to improve frozen flow-matching image generators by adding inference computation inside the denoiser, without changing model weights or the outer sampler. Existing generators usually spend extra test-time computation by increasing the number of sampling steps, which repeatedly evaluates the entire denoiser and couples quality gains to sampler cost. A key challenge is how to use extra computation inside a frozen transformer denoiser: the method must decide which tokens, layers, and sampling times receive repeated updates while preserving the original generation pipeline. We introduce a training-free looping framework that repeatedly applies selected transformer layers inside each denoising call. Dense and Sparse Token Loop vary the token scope; Sampling-Progress Gating and the loop layer range specify when and where looping is active; loop count and strength control the repeated updates; and Loop Guidance combines ordinary and looped vector-field predictions. Across two Scale-RAE model scales, loop variants improve primary and auxiliary quality metrics with competitive quality--efficiency trade-offs. Loop Guidance further improves both primary metrics across all three tested models; on Scale-RAE DiT2.4B, it raises GenEval from 0.4471 to 0.5691 and DPG-Bench from 0.7656 to 0.8053. Code will be released.",
+        "url": "http://arxiv.org/abs/2608.29160v1",
+        "published_date": "2026-08-29T09:17:02+00:00",
+        "updated_date": "2026-08-29T09:17:02+00:00",
+        "categories": [
+            "cs.CV",
+            "cs.AI"
+        ],
+        "authors": [
+            "Yuanyi Yan",
+            "Xinzhe Rao",
+            "Canyu Shen",
+            "Yang Chen",
+            "Yunlu Chen",
+            "Meng Tang",
+            "Teng Long",
+            "Vincent Tao Hu"
+        ],
+        "tldr": "This paper introduces a training-free looping framework that performs internal hidden-state refinement within frozen transformer-based flow-matching generators to boost image quality without increasing sampling steps.",
+        "tldr_zh": "本文提出了一种无需训练的循环框架，通过在冻结的Transformer流匹配生成器内部进行隐藏状态细化，在不增加采样步数的情况下提升图像生成质量。",
+        "relevance_score": 9,
+        "novelty_claim_score": 8,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 9
+    },
+    {
+        "title": "Chat-Edit-3D++: Interactive 3D and 4D Scene Editing via Large Language Models",
+        "summary": "Recent work on image content manipulation based on vision-language pre-training models has been effectively extended to text-driven 3D scene editing. However, existing schemes for 3D scene editing still have certain shortcomings, hindering their further development as interactive design tools. Such schemes typically adhere to fixed input patterns, limiting flexibility in text input. Furthermore, their editing capabilities are constrained by a single or a few 2D visual models and require intricate pipeline design to integrate these models into 3D reconstruction processes. To address the aforementioned issues, we propose the Hash-Atlas network, which reformulates 3D scene editing as operations on 2D atlas images, thereby achieving a workflow decoupling of the 2D editing and 3D reconstruction processes. Building on this foundation, we introduce a dialogue-based 3D scene editing approach, termed CE3D++, which is centered on a large language model (LLM) that allows arbitrary textual input from users and interprets their intentions, subsequently facilitating the autonomous invocation of the corresponding visual models. Additionally, we extend CE3D++ to monocular 4D scenes by imposing motion constraints on moving objects and further fine-tuning the LLM by creating a trajectory dataset related to editing tasks, which enables the smaller LLM to schedule up to 30 different visual tools accurately. Experimental results demonstrate that CE3D++ effectively integrates multiple visual models to achieve diverse visual editing effects, possessing strong scene comprehension and multi-round dialog capabilities. The source codes and trained models are available at https://github.com/Fangkang515/CE3D.",
+        "url": "http://arxiv.org/abs/2608.29137v1",
+        "published_date": "2026-08-29T08:25:58+00:00",
+        "updated_date": "2026-08-29T08:25:58+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Shuangkang Fang",
+            "Yufeng Wang",
+            "Yi-Hsuan Tsai",
+            "Wenrui Ding",
+            "Yi Yang",
+            "Shuchang Zhou",
+            "Ming-Hsuan Yang"
+        ],
+        "tldr": "Chat-Edit-3D++ introduces the Hash-Atlas network to decouple 2D editing from 3D/4D reconstruction, using an LLM as an autonomous agent to orchestrate diverse visual tools for interactive scene manipulation.",
+        "tldr_zh": "Chat-Edit-3D++ 提出 Hash-Atlas 网络，实现了 2D 编辑与 3D/4D 重建过程的解耦，并利用大语言模型作为自主代理，调度多种视觉工具以实现交互式场景编辑。",
+        "relevance_score": 9,
+        "novelty_claim_score": 8,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 9
+    },
+    {
+        "title": "Text-Driven Artistic Staging: Pose, Lighting, and Camera References from Paintings",
+        "summary": "Artists coordinate human pose, illumination, and camera placement to convey narrative and emotion, but existing generative methods typically model these elements independently. We introduce text-to-editable 3D staging, a task that jointly generates human poses, a dominant light, and a camera configuration from an affective description. We construct 11,911 text--staging pairs from 2,328 figurative paintings by reconstructing SMPL bodies, estimating low-frequency illumination, recovering camera parameters, and pairing each scene with ArtEmis descriptions. We train a flow-matching transformer that supports variable numbers of figures and produces multiple staging alternatives for each prompt. On held-out descriptions, the model achieves 32.2\\% retrieval R@1, compared with 16.6\\% for CLIP-based nearest-neighbor retrieval, while approximately preserving corpus-level diversity. These results demonstrate the feasibility of generating editable, emotionally conditioned 3D staging references from text.",
+        "url": "http://arxiv.org/abs/2608.28823v1",
+        "published_date": "2026-08-28T19:49:42+00:00",
+        "updated_date": "2026-08-28T19:49:42+00:00",
+        "categories": [
+            "cs.CV",
+            "cs.AI"
+        ],
+        "authors": [
+            "Yunge Wen"
+        ],
+        "tldr": "The paper introduces a text-to-3D staging framework that jointly generates human poses, lighting, and camera parameters from affective text descriptions by leveraging a large-scale dataset of figurative paintings.",
+        "tldr_zh": "该论文提出了一种文本驱动的3D场景布局框架，通过利用大量艺术绘画数据，实现了从情感化文本描述到人体姿态、灯光和摄像机参数的联合生成。",
+        "relevance_score": 9,
+        "novelty_claim_score": 8,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 9
+    },
+    {
+        "title": "Coarse to Fine: Iterative Adversarial Neural Cellular Automata for Medical Image Synthesis",
+        "summary": "Large-scale, publicly available datasets have driven advances in deep learning, but privacy and legal restrictions often limit data sharing in medical imaging. Synthetic data generation offers a privacy-friendly alternative to enable the training of high-performance models on health data. While most state-of-the-art generative models produce high-quality images, they remain computationally expensive, which limits their applicability on resource-constrained hardware. We propose StyleGANCA, the first lightweight general-purpose NCA-based generative adversarial network. The architecture integrates a StyleGAN-inspired mapping network and adaptive style modulation into a multi-scale NCA synthesis process, enabling latent-controlled image generation through iterative local interactions. We evaluate StyleGANCA on BloodMNIST and PathMNIST against adversarial, variational, diffusion, and NCA-based baselines. Experimental results demonstrate that StyleGANCA achieves competitive image quality with substantially fewer parameters than baseline architectures, achieving the best FID and KID scores on PathMNIST with only 617k parameters. Furthermore, downstream experiments show that the generated images preserve class-specific information and effectively support the training of multi-class classifiers. Our code is publicly available at: https://github.com/MECLabTUDA/StyleGANCA",
+        "url": "http://arxiv.org/abs/2608.28909v1",
+        "published_date": "2026-08-28T22:16:35+00:00",
+        "updated_date": "2026-08-28T22:16:35+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Anh Thi Luu",
+            "Nick Lemke",
+            "Anirban Mukhopadhyay"
+        ],
+        "tldr": "StyleGANCA is a lightweight generative model that combines Neural Cellular Automata (NCA) with StyleGAN architectures to enable high-quality, privacy-preserving medical image synthesis with significantly fewer parameters.",
+        "tldr_zh": "StyleGANCA 提出了一种结合神经元胞自动机（NCA）与 StyleGAN 架构的轻量级生成模型，能够在大幅减少参数的情况下实现高质量、隐私友好的医学图像合成。",
+        "relevance_score": 8,
+        "novelty_claim_score": 9,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 8.5
+    },
+    {
+        "title": "Generalization over Memorization: Generalization-Aware Diffusion Adaptation for Single-Image Multi-View Synthesis",
+        "summary": "We present the winning solution to the ACM Multimedia 2026 Grand Challenge on Single-Image Guided Multi-Angle Image Synthesis. It ranks first among 293 registered teams; 56 teams obtained at least one scored submission on the public Phase-A leaderboard. With only 40 training scenes, the challenge requires 26 target views from one RGB model and one forward pass per view; it prohibits explicit geometry, external rendering, chained generation, candidate selection, and post-processing. We identify a critical model-selection failure: shared training and validation scenes make memorization appear as transferable view control. We therefore introduce GoM. Short for Generalization over Memorization, the framework combines scene-disjoint validation, exposure-matched selection, and targeted diffusion adaptation. Its synthesis model adapts a 4B rectified-flow DiT using rank-32 LoRA, optimizer restarts, late-checkpoint averaging, and VAE decoder tuning. More than 300 offline experiments and 24 online submissions show that validation design and training-trajectory control can matter as much as architecture scale in small-data generative modeling.",
+        "url": "http://arxiv.org/abs/2608.29233v1",
+        "published_date": "2026-08-29T12:39:39+00:00",
+        "updated_date": "2026-08-29T12:39:39+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Jie Li",
+            "Xingchen Zou",
+            "Yuxuan Liang"
+        ],
+        "tldr": "The paper introduces a framework called GoM (Generalization over Memorization) to improve multi-view synthesis from single images by addressing overfitting through scene-disjoint validation and targeted diffusion adaptation.",
+        "tldr_zh": "本文提出了名为GoM（Generalization over Memorization）的框架，通过场景分离验证和针对性扩散模型适配，解决了单图多视角合成中常见的过拟合问题。",
+        "relevance_score": 9,
+        "novelty_claim_score": 7,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 8
+    },
+    {
+        "title": "Dancing Stick Figures: An Introductory Dataset for Training Video Generation Models",
+        "summary": "Training a video-generation model from scratch is hard for reasons that precede model design. The feedback loop is long: a failure that appears only after a training run can make each attempted fix another run. The data are hard to reach: the corpora and recipes behind strong models are large, heterogeneous, and often unreleased. And scoring is blunt: open-ended generation has no single correct output, and an aggregate score does not by itself establish whether a sample succeeds or which property failed. Dancing Stick Figures is a synthetic video dataset built against these three obstacles. For iteration speed, its 64x64, 64-frame reference task is sized for practical repeated training on a single workstation GPU. For accessibility, the release is a 0.79-GB training tier of 4,020 video clips--1,340 six-second source motions, each rendered from three cameras by a deterministic dataset-generation harness--with checkpoints and a Colab workflow that reruns the reference training pipeline at reduced budget on a 16 GB Tesla T4. For scoring, every frame retains its generating state (ARDY cskel27 joint positions, camera, body parameters, and source motion) and per-pixel depth, surface normals, and part labels. These annotations support dataset-specific metrics for visible topology and part-wise motion; corruptions expose their sensitivities and blind spots.",
+        "url": "http://arxiv.org/abs/2608.29123v1",
+        "published_date": "2026-08-29T08:03:19+00:00",
+        "updated_date": "2026-08-29T08:03:19+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Jin Hyuk Cho"
+        ],
+        "tldr": "The paper introduces 'Dancing Stick Figures,' a lightweight, synthetic, and highly annotated dataset designed to accelerate research iteration and benchmarking for video generation models.",
+        "tldr_zh": "该论文提出了“Dancing Stick Figures”数据集，这是一个轻量级、合成且标注详尽的数据集，旨在加速视频生成模型的研究迭代与性能评估。",
+        "relevance_score": 9,
+        "novelty_claim_score": 7,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 8
+    },
+    {
+        "title": "DReSG: Diffusion Residuals for Stylized Gaussian Splatting",
+        "summary": "Reference-guided stylization of scenes represented by 3D Gaussian Splatting (3DGS) is important for efficient and controllable 3D content creation. Existing VGG-feature-based 3D stylization methods provide stable rendered-view optimization, but often under-represent expressive reference style cues; diffusion models offer stronger image priors, yet direct per-view or score-based diffusion guidance can lead to view drift, local artifacts, and hard-to-control appearance updates. We present DReSG, a 3D-grounded residual-feedback framework for stylized Gaussian splatting. DReSG represents attention-guided diffusion proposals as residual targets relative to the current render, and progressively absorbs these residuals into a shared Gaussian scene through multi-view Gaussian feedback. To make this feedback stable and controllable, DReSG modulates residual strength during target construction and combines coverage-aware view selection with conflict-filtered color updates during multi-view fitting. Extensive experiments demonstrate that DReSG achieves competitive reference-guided stylization while better preserving scene structure and cross-view stability. Our project page is available at https://vpx-ecnu.github.io/DReSG-website/.",
+        "url": "http://arxiv.org/abs/2608.29048v1",
+        "published_date": "2026-08-29T04:45:06+00:00",
+        "updated_date": "2026-08-29T04:45:06+00:00",
+        "categories": [
+            "cs.CV",
+            "cs.GR"
+        ],
+        "authors": [
+            "Zhongliang Liu",
+            "Wenjie Liu",
+            "Yang Li"
+        ],
+        "tldr": "DReSG is a framework for stylized 3D Gaussian Splatting that uses diffusion-based residual feedback to ensure high-fidelity style transfer while maintaining multi-view geometric consistency and structural integrity.",
+        "tldr_zh": "DReSG 是一种用于 3D 高斯泼溅（3DGS）风格化的框架，通过基于扩散模型的残差反馈机制，在实现高质量风格迁移的同时，有效保持了多视角的几何一致性和场景结构。",
+        "relevance_score": 8,
+        "novelty_claim_score": 8,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 8
+    },
+    {
+        "title": "A Large-scale Evaluation of Text-guided Models for Facial Editing",
+        "summary": "Facial appearance editing powers popular applications like FaceApp and Photoshop. Generative Adversarial Networks (GANs) and 3D Morphable Models (3DMMs) have been widely used for facial editing. GANs can perform varied facial edits (e.g., changing hair color, hairstyle), but often produce unstable edits. 3DMMs produce stable edits, but can only alter pose and facial expression. Recently, text-guided diffusion models like Nano Banana have become popular for image editing. Text-guided models are a compelling alternative to GANs and 3DMMs since they can produce both stable and varied image edits. While text-guided models have been widely tested for whole-scene edits (e.g., ``make the woman play a guitar''), they have not been comprehensively tested for facial editing. We conducted the first large-scale evaluation ($\\sim1$M images evaluated) of six popular text-guided models on a sequential facial editing task. We present Face-Edit-Attributes, the largest collection of $169$ facial editing attributes focused on hair, accessories, and pose edits. We compared model performance using two popular celebrity face datasets: CelebA and CelebSET. Our results show that most models performed hair and accessory edits well, but struggled with editing pose. All models over-edit (e.g., changing hair color when asked only to change the hairstyle). We also evaluated demographic biases in each model. Our results show surprising biases in overediting: almost all models created more overedits for dark-skinned male faces and old faces. The code and data for our results (including our repository of $\\sim 1$M images) can be accessed \\href{https://github.com/rahul1801/Face-Edit-Bench}{\\textcolor{blue}{here}}.",
+        "url": "http://arxiv.org/abs/2608.28802v1",
+        "published_date": "2026-08-28T19:12:23+00:00",
+        "updated_date": "2026-08-28T19:12:23+00:00",
+        "categories": [
+            "cs.CV",
+            "cs.AI"
+        ],
+        "authors": [
+            "Rahul Nair",
+            "Saurav Pandit",
+            "Hannah Kerner"
+        ],
+        "tldr": "This paper presents the first large-scale systematic evaluation of six text-guided diffusion models for facial editing, introducing a new benchmark (Face-Edit-Attributes) and highlighting significant challenges in edit fidelity and demographic bias.",
+        "tldr_zh": "本文对六种文本引导的扩散模型在人脸编辑任务上进行了首次大规模系统评估，提出了新的基准数据集（Face-Edit-Attributes），并揭示了模型在编辑精确度和人口统计学偏见方面存在的显著问题。",
+        "relevance_score": 9,
+        "novelty_claim_score": 7,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 8
+    },
+    {
+        "title": "Beyond Representation Learning: A Systematic Study of Joint-Embedding Predictive Generation for 3D Brain MRI",
+        "summary": "Joint-embedding predictive architectures (JEPAs) have primarily been developed for self-supervised representation learning. Denoising JEPA (D-JEPA) recently demonstrated strong generative capabilities on natural images, yet the applicability to 3D medical imaging remains unexplored. Building on the D-JEPA framework, we present Med-D-JEPA, a systematic adaptation and evaluation of joint-embedding predictive generation for 3D brain MRI. Med-D-JEPA operates on continuous latent tokens produced by a 3D KL-regularized adversarial variational autoencoder, and combines masked context prediction, representation-level alignment, per-token diffusion, and iterative next-set-of-token sampling. We evaluate unconditional and class-conditional generation quality on BraTS2019 and OASIS-1 datasets; downstream classification utility; and preliminary whole-tumor segmentation on BraTS2020. Across different generation settings, Med-D-JEPA achieves superior or competitive performance compared to several strong baselines on fidelity and diversity metrics. Compared to training with real samples, Med-D-JEPA-based synthetic pretraining improves classification AUC from 0.63 to 0.85 on BraTS2019 and from 0.78 to 0.87 on OASIS-1. In the segmentation study, pretraining on Med-D-JEPA samples improves Dice from 0.74 to 0.80 and reduces HD95 from 13.40 to 9.56 mm. These findings establish joint-embedding predictive generation as a promising direction for 3D medical image synthesis and encourage further research in this direction.",
+        "url": "http://arxiv.org/abs/2608.28787v1",
+        "published_date": "2026-08-28T18:49:02+00:00",
+        "updated_date": "2026-08-28T18:49:02+00:00",
+        "categories": [
+            "cs.CV"
+        ],
+        "authors": [
+            "Meng Zhou",
+            "Wenhao You",
+            "Yuxing Chen",
+            "Yueying Tian"
+        ],
+        "tldr": "Med-D-JEPA adapts Joint-Embedding Predictive Architectures for 3D brain MRI synthesis, demonstrating significant improvements in downstream classification and segmentation performance.",
+        "tldr_zh": "Med-D-JEPA 将联合嵌入预测架构（JEPA）应用于 3D 脑部 MRI 合成，并证明其在下游分类和分割任务中具有显著的性能提升。",
+        "relevance_score": 8,
+        "novelty_claim_score": 7,
+        "clarity_score": 9,
+        "potential_impact_score": 8,
+        "overall_priority_score": 8
+    },
+    {
+        "title": "Medical Foundation Model Features as Perceptual Loss for Brain MRI Contrast Dose Simulation",
+        "summary": "Perceptual losses are widely used in medical image synthesis because they encourage agreement in high-level structure beyond voxel-wise intensity similarity. In practice, most perceptual losses are still computed with natural-image backbones such as VGG16 or ResNet50, even when the target domain is magnetic resonance imaging (MRI). This mismatch may weaken supervision for anatomy, contrast enhancement, and acquisition variability. We test whether medical foundation model features provide a more suitable perceptual loss for brain MRI contrast dose simulation. The study has two stages. First, we compare RadImageNet, SegVol, and BrainIAC with ImageNet-pretrained VGG16 and ResNet50 as frozen feature extractors on four public medical imaging benchmarks: thyroid ultrasound, breast ultrasound, anterior cruciate ligament knee MRI, and meniscus knee MRI. RadImageNet achieves the lowest mean rank across the Stage I representation suite and is selected as $φ^\\star$. Second, we replace only the VGG16 feature extractor in an existing iterative brain MRI dose simulation framework with $φ^\\star$. The generator, reconstruction loss, adversarial loss, auxiliary losses, optimization schedule, and loss weights are kept unchanged. Standard metrics change modestly, with PSNR increasing from 41.63 to 41.74, SSIM from 0.9739 to 0.9754, RMSE decreasing from 0.1384 to 0.1369, and residual-uptake CNR from 0.0085 to 0.0082. The visual results show the main effect: RadImageNet reduces residual enhancement in marked structures, follows a more faithful dose-reduction trajectory, and remains close to the acquired 10% low-dose target. These results support domain-aligned radiology features as a practical perceptual feature space for MRI dose simulation, while leaving clinical equivalence and larger-cohort validation as future work.",
+        "url": "http://arxiv.org/abs/2608.28773v1",
+        "published_date": "2026-08-28T18:30:34+00:00",
+        "updated_date": "2026-08-28T18:30:34+00:00",
+        "categories": [
+            "eess.IV",
+            "cs.CV"
+        ],
+        "authors": [
+            "Changsheng Fang",
+            "Dayang Wang",
+            "T. Campbell Arnold",
+            "Enhao Gong",
+            "Srivathsa Pasumarthi"
+        ],
+        "tldr": "This study explores using medical foundation model features (specifically RadImageNet) as a perceptual loss for brain MRI contrast dose simulation, demonstrating superior visual fidelity over traditional natural-image-based perceptual losses.",
+        "tldr_zh": "该研究探讨了利用医学基础模型（特别是RadImageNet）特征作为感知损失，用于脑部MRI对比度剂量模拟，并证明了其在视觉保真度上优于传统的自然图像感知损失。",
+        "relevance_score": 8,
+        "novelty_claim_score": 7,
+        "clarity_score": 9,
+        "potential_impact_score": 7,
+        "overall_priority_score": 8
+    },
+    {
+        "title": "STARLINC: Satellite Trail Artifact Removal using Inter-Frame Correlation",
+        "summary": "The rapid expansion of low Earth orbit satellites such as Starlink is increasingly contaminating astronomical surveys. In practice, contaminated images are often identified through inspection. However, modern surveys generate terabytes of data each night, making manual screening infeasible and necessitating reliable automated methods for satellite trail removal. Unfortunately, existing general-domain line detection methods fail to generalize to astronomical images due to domain mismatch, which are mostly grayscale with sparse bright stars and have a low signal-to-noise ratio. Moreover, training new models from scratch is impractical due to the lack of large-scale annotated astronomical datasets. To address these challenges, we introduce STARLINC, the first ML-based framework for satellite trail removal without requiring tedious pixel-level annotation of astronomical images. STARLINC combines synthetic satellite trail generation for training, inter-frame differential maps from temporally adjacent exposures to highlight transient trails, and heatmaps to provide additional localization cues for pixel-level segmentation. Extensive experiments on real-world data demonstrate substantial improvements over baselines, establishing STARLINC as a scalable solution for next-generation astronomical surveys. Code is available at https://github.com/starioKim/STARLINC.",
+        "url": "http://arxiv.org/abs/2608.29145v1",
+        "published_date": "2026-08-29T08:42:20+00:00",
+        "updated_date": "2026-08-29T08:42:20+00:00",
+        "categories": [
+            "cs.CV",
+            "cs.AI"
+        ],
+        "authors": [
+            "Shingeon Kim",
+            "Hyeyoon Lee",
+            "Dain Kwon",
+            "Kanghyun Choi",
+            "Sunjong Park",
+            "Mi-Ryang Kim",
+            "Jeong-Eun Lee",
+            "Jinho Lee"
+        ],
+        "tldr": "STARLINC is an automated ML framework for removing satellite trails from astronomical imagery using synthetic data generation and inter-frame differential maps, eliminating the need for manual pixel-level annotations.",
+        "tldr_zh": "STARLINC 是一个用于去除天文图像中卫星轨迹的自动化机器学习框架，通过合成数据生成和帧间差分映射，无需人工标注即可实现高效处理。",
+        "relevance_score": 3,
+        "novelty_claim_score": 8,
+        "clarity_score": 9,
+        "potential_impact_score": 7,
+        "overall_priority_score": 5
+    }
+]
